@@ -1,0 +1,320 @@
+
+
+<section id="contact" class="w-full py-12 border-t border-[#ffffff10]">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-lg text-[var(--sec)] mb-2 shiny-sec">Let's talk</h2>
+    <h3 class="text-4xl md:text-5xl font-medium text-[var(--white)] mb-6">
+      Contact
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="text-[var(--white-icon)]">
+        <p class="mb-4">
+          Have a question or a project in mind? Feel free to reach out.
+        </p>
+        <br>
+        
+        <!-- <div class="flex items-center gap-2">
+          <span>Location:</span>
+          <span class="text-[var(--white)]">Colombia, Valle del cauca</span>
+        </div> -->
+        <div>
+          <!-- <div class="flex items-center mb-2">
+            <span class="text-xl mr-2">💻</span>
+            <span class="font-semibold text-lg">Isometric Tech Animation</span>
+          </div> -->
+          <div class="w-full h-[220px] md:h-[260px] flex items-center justify-center">
+            <canvas id="isometric-tech-canvas" class="block w-full h-full"></canvas>
+          </div>
+        </div>
+      </div>
+
+      
+
+      <div>
+        <form
+          id="contact-form"
+          action="https://formspree.io/f/mnnjznkj"
+          method="POST"
+          class="flex flex-col gap-4"
+        >
+          <input
+            type="text"
+            name="from_name"
+            placeholder="Name"
+            required
+            class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
+          />
+          <input
+            type="email"
+            name="reply_to"
+            placeholder="Email"
+            required
+            class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
+          />
+          <textarea
+            name="message"
+            placeholder="Message"
+            rows="6"
+            required
+            class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)] resize-none"
+          ></textarea>
+          <button
+            type="submit"
+            class="px-4 py-2 bg-[var(--white-icon-tr)] text-[var(--white)] rounded-lg opacity-60 transition-opacity border border-[var(--white-icon-tr)] hover:opacity-100 hover:bg-[var(--white-icon-tr)]"
+          >
+            Submit
+          </button>
+        </form>
+        <div
+          id="form-message"
+          class="hidden justify-center items-center mt-4 text-[var(--white)] text-lg"
+        >
+          ✅ Thank you for your message!
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="module" is:inline>
+  const form = document.getElementById("contact-form");
+  const formMessage = document.getElementById("form-message");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" },
+      });
+      if (response.ok) {
+        form.reset();
+        form.style.display = "none";
+        formMessage.classList.remove("hidden");
+      } else {
+        const data = await response.json();
+        console.error("Error response:", data);
+        alert("There was a problem sending your message.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("There was a problem sending your message.");
+    }
+  });
+</script>
+
+<script is:inline>
+// Neon color palette
+const COLORS = {
+  laptop: "#a476ff",
+  screen: "#2323a8",
+  keyboard: "#5e4491",
+  chart: "#6ee7b7",
+  bar: "#fff",
+  gear: "#f43f5e",
+  person1: "#a476ff",
+  person2: "#6ee7b7",
+  person3: "#fff",
+  shadow: "#101010",
+};
+
+function drawIsometricLaptop(ctx, cx, cy, scale) {
+  // Base
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(scale, scale);
+  // Laptop base
+  ctx.beginPath();
+  ctx.moveTo(-60, 30); ctx.lineTo(60, 30); ctx.lineTo(80, 50); ctx.lineTo(-40, 50); ctx.closePath();
+  ctx.fillStyle = COLORS.laptop;
+  ctx.shadowColor = COLORS.laptop;
+  ctx.shadowBlur = 16;
+  ctx.globalAlpha = 0.95;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 1;
+  // Keyboard
+  ctx.beginPath();
+  ctx.moveTo(-50, 35); ctx.lineTo(50, 35); ctx.lineTo(65, 47); ctx.lineTo(-35, 47); ctx.closePath();
+  ctx.fillStyle = COLORS.keyboard;
+  ctx.globalAlpha = 0.7;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  // Screen
+  ctx.beginPath();
+  ctx.moveTo(-55, 30); ctx.lineTo(-55, -40); ctx.lineTo(55, -40); ctx.lineTo(55, 30); ctx.closePath();
+  ctx.fillStyle = COLORS.screen;
+  ctx.shadowColor = COLORS.screen;
+  ctx.shadowBlur = 12;
+  ctx.globalAlpha = 0.92;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 1;
+  // Screen content (chart)
+  ctx.save();
+  ctx.translate(0, -20);
+  ctx.beginPath();
+  ctx.moveTo(-30, 0); ctx.lineTo(-10, -10); ctx.lineTo(10, -5); ctx.lineTo(30, -18);
+  ctx.strokeStyle = COLORS.chart;
+  ctx.lineWidth = 3;
+  ctx.shadowColor = COLORS.chart;
+  ctx.shadowBlur = 8;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.restore();
+  ctx.restore();
+}
+
+function drawFloatingBar(ctx, x, y, w, h, t) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x, y - Math.sin(t) * 6, w, h);
+  ctx.fillStyle = COLORS.bar;
+  ctx.shadowColor = COLORS.bar;
+  ctx.shadowBlur = 10;
+  ctx.globalAlpha = 0.7;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+function drawGear(ctx, cx, cy, r, t) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(t);
+  ctx.beginPath();
+  for (let i = 0; i < 8; i++) {
+    ctx.lineTo(r * 1.1 * Math.cos((i * Math.PI) / 4), r * 1.1 * Math.sin((i * Math.PI) / 4));
+    ctx.lineTo(r * Math.cos(((i + 0.5) * Math.PI) / 4), r * Math.sin(((i + 0.5) * Math.PI) / 4));
+  }
+  ctx.closePath();
+  ctx.fillStyle = COLORS.gear;
+  ctx.shadowColor = COLORS.gear;
+  ctx.shadowBlur = 8;
+  ctx.globalAlpha = 0.7;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+function drawPerson(ctx, x, y, scale, color, t) {
+  ctx.save();
+  ctx.translate(x, y - Math.sin(t) * 4);
+  ctx.scale(scale, scale);
+  // Head
+  ctx.beginPath();
+  ctx.arc(0, -10, 6, 0, 2 * Math.PI);
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 8;
+  ctx.globalAlpha = 0.9;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 1;
+  // Body
+  ctx.beginPath();
+  ctx.ellipse(0, 4, 7, 13, 0, 0, 2 * Math.PI);
+  ctx.fillStyle = color;
+  ctx.globalAlpha = 0.5;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+function drawChart(ctx, x, y, t) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(Math.sin(t) * 0.1);
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(18, -12);
+  ctx.lineTo(36, -6);
+  ctx.lineTo(54, -18);
+  ctx.strokeStyle = COLORS.chart;
+  ctx.lineWidth = 3;
+  ctx.shadowColor = COLORS.chart;
+  ctx.shadowBlur = 8;
+  ctx.globalAlpha = 0.8;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+function drawProgress(ctx, x, y, w, h, t) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x, y, w, h);
+  ctx.strokeStyle = COLORS.bar;
+  ctx.lineWidth = 2;
+  ctx.globalAlpha = 0.5;
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+  ctx.beginPath();
+  ctx.rect(x, y, w * ((Math.sin(t) + 1) / 2), h);
+  ctx.fillStyle = COLORS.chart;
+  ctx.shadowColor = COLORS.chart;
+  ctx.shadowBlur = 8;
+  ctx.globalAlpha = 0.7;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+function animateIsometricTech() {
+  const canvas = document.getElementById("isometric-tech-canvas");
+  if (!canvas) return;
+  const parent = canvas.parentElement;
+  if (!parent) return;
+  const dpr = window.devicePixelRatio || 1;
+  const rect = parent.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width = rect.width + "px";
+  canvas.style.height = rect.height + "px";
+  const ctx = canvas.getContext("2d");
+  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Central laptop
+    drawIsometricLaptop(ctx, rect.width / 2, rect.height / 2 + 20, 1.1);
+    // Floating bars
+    drawFloatingBar(ctx, rect.width / 2 - 110, rect.height / 2 - 40, 32, 10, t + 0.5);
+    drawFloatingBar(ctx, rect.width / 2 + 80, rect.height / 2 - 60, 28, 10, t + 1.2);
+    // Gears
+    drawGear(ctx, rect.width / 2 - 80, rect.height / 2 + 60, 16, t * 0.8);
+    drawGear(ctx, rect.width / 2 + 90, rect.height / 2 + 50, 12, -t * 1.1);
+    // People
+    drawPerson(ctx, rect.width / 2 - 40, rect.height / 2 + 10, 1, COLORS.person1, t);
+    drawPerson(ctx, rect.width / 2 + 30, rect.height / 2 + 18, 0.9, COLORS.person2, t + 1.5);
+    drawPerson(ctx, rect.width / 2, rect.height / 2 - 10, 0.8, COLORS.person3, t + 2.2);
+    // Chart
+    drawChart(ctx, rect.width / 2 + 50, rect.height / 2 - 70, t);
+    // Progress bar
+    drawProgress(ctx, rect.width / 2 - 60, rect.height / 2 + 80, 120, 10, t * 1.2);
+    t += 0.03;
+    requestAnimationFrame(draw);
+  }
+  draw();
+  // Responsive
+  let resizeTimeout;
+  function handleResize() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      animateIsometricTech();
+    }, 100);
+  }
+  window.addEventListener("resize", handleResize);
+}
+
+if (typeof window !== "undefined") {
+  setTimeout(animateIsometricTech, 0);
+}
+</script>

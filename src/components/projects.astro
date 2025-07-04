@@ -1,0 +1,129 @@
+---
+
+
+interface Project {
+  title: string;
+  description: string;
+  link: string;
+  
+}
+
+const projects: Project[] = [
+  {
+    title: "Hospital-Management-System",
+    description: "The Hospital Management System is a comprehensive web-based application designed to streamline hospital operations. It provides features for managing patients, doctors, appointments, billing, and medical records, ensuring efficient communication and organization within a hospital.",
+    link: "https://github.com/Sherif-ahmed177/Hospital-Management-System",
+    
+  },
+  {
+    title: "Economic-Growth-Prediction",
+    description: "This project investigates the relationship between changes in nighttime light intensity and internet speeds, exploring their combined impact on economic development. Using data from Ookla (internet speeds) and VIIRS (nighttime radiance), the project focuses on three Brazilian cities (Rio de Janeiro, Bahia, and São Paulo) during the first quarter of 2020.",
+    link: "https://github.com/Sherif-ahmed177/Economic-Growth-Prediction",
+    
+  },
+  {
+    title: "University-Coordination-System",
+    description: "The University Coordination System is developed using ASP.NET Core MVC to centralize and automate various administrative tasks related to student enrollment and academic program management across different schools within a university.",
+    link: "https://github.com/Sherif-ahmed177/University-Coordination-System",
+    
+  },
+  {
+    title: "smart-photo-editor",
+    description: "A backend photo editor built with Flask. Supports operations like FFT, filtering, histogram equalization, masking, noise addition, and image uploads.",
+    link: "https://github.com/Sherif-ahmed177/smart-photo-editor-backend",
+    
+  },
+];
+---
+
+<section
+  id="projects"
+  class="py-12 border-t border-[#ffffff10] text-[var(--white)]"
+>
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-lg text-[var(--sec)] mb-2 shiny-sec">My work</h2>
+    <h3 class="text-4xl md:text-5xl font-medium mb-8">Projects</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {
+        projects.map((project, index) => (
+          <div
+            class={`group bg-[var(--background)] border border-[var(--white-icon-tr)] border-glow rounded-2xl p-6 shadow-lg transition-all duration-200 flex flex-col gap-4 hover:scale-[1.02] hover:shadow-2xl cursor-pointer opacity-0 translate-y-8 will-change-transform`}
+            data-animate
+            style={`transition-delay: ${index * 120}ms;`}
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <span class="inline-block w-2 h-8 rounded bg-[var(--sec)] mr-2"></span>
+              <h4 class="text-2xl font-semibold text-[var(--sec)] group-hover:underline">{project.title}</h4>
+            </div>
+            <p class="text-[var(--white-icon)] text-base mb-4">{project.description}</p>
+            <div class="flex gap-4 mt-auto">
+              <a
+                target="_blank"
+                href={project.link}
+                aria-label="GitHub"
+                class="flex items-center gap-2 text-[var(--white-icon)] hover:text-[var(--sec)] transition duration-300 border border-[var(--white-icon-tr)] px-4 py-2 rounded-lg bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                  <path d="M12.001 2C6.47598 2 2.00098 6.475 2.00098 12C2.00098 16.425 4.86348 20.1625 8.83848 21.4875C9.33848 21.575 9.52598 21.275 9.52598 21.0125C9.52598 20.775 9.51348 19.9875 9.51348 19.15C7.00098 19.6125 6.35098 18.5375 6.15098 17.975C6.03848 17.6875 5.55098 16.8 5.12598 16.5625C4.77598 16.375 4.27598 15.9125 5.11348 15.9C5.90098 15.8875 6.46348 16.625 6.65098 16.925C7.55098 18.4375 8.98848 18.0125 9.56348 17.75C9.65098 17.1 9.91348 16.6625 10.201 16.4125C7.97598 16.1625 5.65098 15.3 5.65098 11.475C5.65098 10.3875 6.03848 9.4875 6.67598 8.7875C6.57598 8.5375 6.22598 7.5125 6.77598 6.1375C6.77598 6.1375 7.61348 5.875 9.52598 7.1625C10.326 6.9375 11.176 6.825 12.026 6.825C12.876 6.825 13.726 6.9375 14.526 7.1625C16.4385 5.8625 17.276 6.1375 17.276 6.1375C17.826 7.5125 17.476 8.5375 17.376 8.7875C18.0135 9.4875 18.401 10.375 18.401 11.475C18.401 15.3125 16.0635 16.1625 13.8385 16.4125C14.201 16.725 14.5135 17.325 14.5135 18.2625C14.5135 19.6 14.501 20.675 14.501 21.0125C14.501 21.275 14.6885 21.5875 15.1885 21.4875C19.259 20.1133 21.9999 16.2963 22.001 12C22.001 6.475 17.526 2 12.001 2Z" />
+                </svg>
+                <span>GitHub</span>
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+    <a
+      target="_blank"
+      href="https://github.com/Sherif-ahmed177?tab=repositories"
+      aria-label="GitHub"
+      class="w-full flex items-center justify-center gap-2 mt-9 text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-[var(--white-icon-tr)] p-3 rounded-full bg-[#1414149c] hover:bg-[var(--white-icon-tr)] hover:scale-105"
+    >
+      <span class="md:text-lg text-md">More projects on</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        class="size-6"
+      >
+        <path
+          d="M12.001 2C6.47598 2 2.00098 6.475 2.00098 12C2.00098 16.425 4.86348 20.1625 8.83848 21.4875C9.33848 21.575 9.52598 21.275 9.52598 21.0125C9.52598 20.775 9.51348 19.9875 9.51348 19.15C7.00098 19.6125 6.35098 18.5375 6.15098 17.975C6.03848 17.6875 5.55098 16.8 5.12598 16.5625C4.77598 16.375 4.27598 15.9125 5.11348 15.9C5.90098 15.8875 6.46348 16.625 6.65098 16.925C7.55098 18.4375 8.98848 18.0125 9.56348 17.75C9.65098 17.1 9.91348 16.6625 10.201 16.4125C7.97598 16.1625 5.65098 15.3 5.65098 11.475C5.65098 10.3875 6.03848 9.4875 6.67598 8.7875C6.57598 8.5375 6.22598 7.5125 6.77598 6.1375C6.77598 6.1375 7.61348 5.875 9.52598 7.1625C10.326 6.9375 11.176 6.825 12.026 6.825C12.876 6.825 13.726 6.9375 14.526 7.1625C16.4385 5.8625 17.276 6.1375 17.276 6.1375C17.826 7.5125 17.476 8.5375 17.376 8.7875C18.0135 9.4875 18.401 10.375 18.401 11.475C18.401 15.3125 16.0635 16.1625 13.8385 16.4125C14.201 16.725 14.5135 17.325 14.5135 18.2625C14.5135 19.6 14.501 20.675 14.501 21.0125C14.501 21.275 14.6885 21.5875 15.1885 21.4875C19.259 20.1133 21.9999 16.2963 22.001 12C22.001 6.475 17.526 2 12.001 2Z"
+        ></path>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<script is:inline>
+  if (typeof window !== "undefined") {
+    const cards = document.querySelectorAll('[data-animate]');
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100', 'translate-y-0', 'border-glow-active');
+            entry.target.classList.remove('opacity-0', 'translate-y-8');
+          } else {
+            entry.target.classList.remove('opacity-100', 'translate-y-0', 'border-glow-active');
+            entry.target.classList.add('opacity-0', 'translate-y-8');
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    cards.forEach(card => observer.observe(card));
+  }
+</script>
+
+<style is:global>
+.border-glow {
+  box-shadow: 0 0 0 0 var(--sec), 0 0 0 0 transparent;
+  border-color: var(--white-icon-tr);
+  transition: box-shadow 0.7s cubic-bezier(.68,-0.55,.27,1.55), border-color 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+}
+.border-glow-active {
+  box-shadow: 0 0 16px 2px var(--sec), 0 0 0 0 transparent;
+  border-color: var(--sec);
+}
+</style>
