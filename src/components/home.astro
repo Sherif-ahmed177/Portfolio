@@ -18,20 +18,20 @@ import SkillsList from "../React/SkillsList.tsx";
         >
           Sherif <br /> Ahmed
         </h1>
-        <p class="text-md md:text-2xl text-[var(--white-icon)]">
-          <!-- Transforming ideas into interactive and seamless digital experiences
-          with cutting-edge <span class="text-[var(--sec)] shiny-sec">frontend</span> development. -->
-          I am a computer science student with a strong interest in 
-          <span class="text-[var(--sec)] shiny-sec">software engineering</span>
-          and a passion for solving real-world problems through technology.
-        </p>
+        <div class="flex flex-col items-center justify-center space-y-4 md:space-y-6">
+          <p class="text-lg md:text-xl lg:text-2xl text-[var(--white-icon)] text-center max-w-2xl leading-relaxed">
+            I am a computer science student with a strong interest in 
+            <span class="text-[var(--sec)] shiny-sec">software engineering</span>
+            and a passion for solving real-world problems through technology.
+          </p>
+        </div>
       </div>
       <div class="flex justify-start gap-2 pt-3 md:pt-6">
         <a
           target="_blank"
           href="https://github.com/Sherif-ahmed177"
           aria-label="GitHub"
-          class="text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-1 border-[var(--white-icon-tr)] p-3 rounded-xl bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
+          class="text-[] hover:text-white transition duration-300 ease-in-out border border-1 border-[var(--white-icon-tr)] p-3 rounded-xl bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@ import SkillsList from "../React/SkillsList.tsx";
             class="size-8"
           >
             <path
-              d="M12.001 2C6.47598 2 2.00098 6.475 2.00098 12C2.00098 16.425 4.86348 20.1625 8.83848 21.4875C9.33848 21.575 9.52598 21.275 9.52598 21.0125C9.52598 20.775 9.51348 19.9875 9.51348 19.15C7.00098 19.6125 6.35098 18.5375 6.15098 17.975C6.03848 17.6875 5.55098 16.8 5.12598 16.5625C4.77598 16.375 4.27598 15.9125 5.11348 15.9C5.90098 15.8875 6.46348 16.625 6.65098 16.925C7.55098 18.4375 8.98848 18.0125 9.56348 17.75C9.65098 17.1 9.91348 16.6625 10.201 16.4125C7.97598 16.1625 5.65098 15.3 5.65098 11.475C5.65098 10.3875 6.03848 9.4875 6.67598 8.7875C6.57598 8.5375 6.22598 7.5125 6.77598 6.1375C6.77598 6.1375 7.61348 5.875 9.52598 7.1625C10.326 6.9375 11.176 6.825 12.026 6.825C12.876 6.825 13.726 6.9375 14.526 7.1625C16.4385 5.8625 17.276 6.1375 17.276 6.1375C17.826 7.5125 17.476 8.5375 17.376 8.7875C18.0135 9.4875 18.401 10.375 18.401 11.475C18.401 15.3125 16.0635 16.1625 13.8385 16.4125C14.201 16.725 14.5135 17.325 14.5135 18.2625C14.5135 19.6 14.501 20.675 14.501 21.0125C14.501 21.275 14.6885 21.5875 15.1885 21.4875C19.259 20.1133 21.9999 16.2963 22.001 12C22.001 6.475 17.526 2 12.001 2Z"
+              d="M12.001 2C6.47598 2 2.00098 6.475 2.00098 12C2.00098 16.425 4.86348 20.1625 8.83848 21.4875C9.33848 21.575 9.52598 21.275 9.52598 21.0125C9.52598 20.775 9.51348 19.9875 9.51348 19.15C7.00098 19.6125 6.35098 18.5375 6.15098 17.975C6.03848 17.6875 5.55098 16.8 5.12598 16.5625C4.77598 16.375 4.27598 15.9125 5.11348 15.9C5.90098 15.8875 6.46348 16.625 6.65098 16.925C7.55098 18.4375 8.98848 18.0125 9.56348 17.75C9.65098 17.1 9.91348 16.6625 10.201 16.4125C7.97598 16.1625 5.65098 15.3 5.65098 11.475C5.65098 10.3875 6.03848 9.4875 6.67598 8.7875C6.57598 8.5375 6.22598 7.5125 6.77598 6.1375C6.77598 6.1375 7.61348 5.875 9.52598 7.1625C10.326 6.9375 11.176 6.825 12.026 6.825C12.876 6.825 13.726 6.9375 14.526 7.1625C16.4385 6.8625 17.276 6.1375 17.276 6.1375C17.826 7.5125 17.476 8.5375 17.376 8.7875C18.0135 9.4875 18.401 10.375 18.401 11.475C18.401 15.3125 16.0635 16.1625 13.8385 16.4125C14.201 16.725 14.5135 17.325 14.5135 18.2625C14.5135 19.6 14.501 20.675 14.501 21.0125C14.501 21.275 14.6885 21.5875 15.1885 21.4875C19.259 20.1133 21.9999 16.2963 22.001 12C22.001 6.475 17.526 2 12.001 2Z"
             ></path>
           </svg>
         </a>
@@ -84,23 +84,253 @@ import SkillsList from "../React/SkillsList.tsx";
 
     <LogoWall />
 
+    <!-- Terminal Section with Exact Button Design -->
+    <div class="flex justify-center w-full">
+      <div class="w-full max-w-6xl flex items-center justify-center gap-8">
+        <!-- Left Button - Exact Design -->
+        <div class="hidden lg:flex flex-col items-center justify-center">
+          <div class="about-button">
+            <div class="button-text">TERMINAL</div>
+            <div class="connecting-line"></div>
+          </div>
+        </div>
+
+        <!-- Terminal - Centered -->
+        <div class="w-full max-w-2xl flex justify-center">
+          <LetterGlitch
+            client:load
+            glitchColors={["#5e4491", "#A476FF", "#241a38"]}
+            glitchSpeed={33}
+            centerVignette={false}
+            outerVignette={true}
+            smooth={true}
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills Section -->
     <div class="flex flex-col lg:flex-row items-center gap-8">
       <SkillsList client:load />
-      <div
-        class="flex justify-center md:w-full md:h-[292px] size-[290px] pt-3 md:pt-9 md:ml-16"
-      >
-        <LetterGlitch
-          client:load
-          glitchColors={["#5e4491", "#A476FF", "#241a38"]}
-          glitchSpeed={33}
-          centerVignette={false}
-          outerVignette={true}
-          smooth={true}
-        />
-      </div>
     </div>
   </div>
 </section>
+
+<script is:inline>
+// Computer Science Animation
+const CS_COLORS = {
+  primary: "#a476ff",
+  secondary: "#6ee7b7", 
+  accent: "#f43f5e",
+  white: "#ffffff",
+  dark: "#2a1b3d"
+};
+
+function drawCodeBlock(ctx, x, y, t) {
+  ctx.save();
+  ctx.translate(x, y);
+  
+  // Code block background
+  ctx.fillStyle = 'rgba(20, 20, 20, 0.9)';
+  ctx.fillRect(-40, -30, 80, 60);
+  
+  // Code lines
+  ctx.fillStyle = CS_COLORS.primary;
+  ctx.font = '10px monospace';
+  ctx.textAlign = 'left';
+  
+  const codeLines = [
+    'function solve() {',
+    '  return "Sherif";',
+    '}'
+  ];
+  
+  codeLines.forEach((line, i) => {
+    const alpha = Math.sin(t + i) * 0.2 + 0.9;
+    ctx.globalAlpha = alpha;
+    ctx.fillText(line, -35, -15 + i * 12);
+  });
+  
+  ctx.restore();
+}
+
+function drawCircuit(ctx, x, y, t) {
+  ctx.save();
+  ctx.translate(x, y);
+  
+  // Circuit lines
+  ctx.strokeStyle = CS_COLORS.secondary;
+  ctx.lineWidth = 3;
+  ctx.shadowColor = CS_COLORS.secondary;
+  ctx.shadowBlur = 12;
+  ctx.globalAlpha = 0.8;
+  
+  // Horizontal lines
+  ctx.beginPath();
+  ctx.moveTo(-30, -20);
+  ctx.lineTo(30, -20);
+  ctx.moveTo(-30, 20);
+  ctx.lineTo(30, 20);
+  ctx.stroke();
+  
+  // Vertical lines
+  ctx.beginPath();
+  ctx.moveTo(-20, -30);
+  ctx.lineTo(-20, 30);
+  ctx.moveTo(20, -30);
+  ctx.lineTo(20, 30);
+  ctx.stroke();
+  
+  // Circuit nodes
+  ctx.fillStyle = CS_COLORS.secondary;
+  ctx.shadowBlur = 15;
+  ctx.globalAlpha = 0.9;
+  
+  const nodes = [
+    { x: -20, y: -20 }, { x: 20, y: -20 },
+    { x: -20, y: 20 }, { x: 20, y: 20 }
+  ];
+  
+  nodes.forEach((node, i) => {
+    const pulse = Math.sin(t + i) * 0.3 + 1.1;
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, 4 * pulse, 0, 2 * Math.PI);
+    ctx.fill();
+  });
+  
+  ctx.restore();
+}
+
+function drawBinary(ctx, x, y, t) {
+  ctx.save();
+  ctx.translate(x, y);
+  
+  ctx.fillStyle = CS_COLORS.accent;
+  ctx.font = '12px monospace';
+  ctx.textAlign = 'center';
+  ctx.globalAlpha = 0.9;
+  
+  const binary = ['1010', '1100', '0110'];
+  binary.forEach((line, i) => {
+    const alpha = Math.sin(t + i * 0.5) * 0.2 + 0.9;
+    ctx.globalAlpha = alpha;
+    ctx.fillText(line, 0, i * 15);
+  });
+  
+  ctx.restore();
+}
+
+function drawTechIcon(ctx, x, y, t, type) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(t * 0.5);
+  
+  ctx.strokeStyle = CS_COLORS.primary;
+  ctx.lineWidth = 3;
+  ctx.shadowColor = CS_COLORS.primary;
+  ctx.shadowBlur = 15;
+  ctx.globalAlpha = 0.9;
+  
+  switch(type) {
+    case 'cpu':
+      // CPU icon
+      ctx.strokeRect(-15, -15, 30, 30);
+      ctx.fillStyle = CS_COLORS.primary;
+      ctx.fillRect(-10, -10, 20, 20);
+      break;
+    case 'memory':
+      // Memory icon
+      ctx.strokeRect(-12, -18, 24, 36);
+      for(let i = 0; i < 3; i++) {
+        ctx.fillRect(-8, -12 + i * 12, 16, 8);
+      }
+      break;
+    case 'network':
+      // Network icon
+      ctx.beginPath();
+      ctx.arc(0, 0, 12, 0, 2 * Math.PI);
+      ctx.stroke();
+      for(let i = 0; i < 4; i++) {
+        const angle = (i * Math.PI) / 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(angle) * 20, Math.sin(angle) * 20);
+        ctx.stroke();
+      }
+      break;
+  }
+  
+  ctx.restore();
+}
+
+// Global variable for animation pause state
+let csAnimationPaused = false;
+
+function animateCS() {
+  const canvas = document.getElementById("cs-animation-canvas");
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  
+  canvas.width = 270;
+  canvas.height = 270;
+  
+  let t = 0;
+  
+  // Add hover event listeners to skills items
+  function setupEventListeners() {
+    const skillsItems = document.querySelectorAll('.skills-anim-pause');
+    console.log('Found skills items:', skillsItems.length); // Debug
+    
+    skillsItems.forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        console.log('Mouse enter - pausing animation'); // Debug
+        csAnimationPaused = true;
+      });
+      item.addEventListener('mouseleave', () => {
+        console.log('Mouse leave - resuming animation'); // Debug
+        csAnimationPaused = false;
+      });
+    });
+  }
+  
+  // Setup event listeners after a delay
+  setTimeout(setupEventListeners, 100);
+
+  function draw() {
+    // Always clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Only animate if not paused
+    if (!csAnimationPaused) {
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      
+      drawCodeBlock(ctx, centerX - 80, centerY - 60, t);
+      drawCodeBlock(ctx, centerX + 80, centerY + 60, t + 1);
+      drawCircuit(ctx, centerX - 60, centerY + 80, t + 0.5);
+      drawCircuit(ctx, centerX + 60, centerY - 80, t + 1.5);
+      drawBinary(ctx, centerX - 100, centerY, t);
+      drawBinary(ctx, centerX + 100, centerY, t + 1);
+      drawTechIcon(ctx, centerX, centerY - 40, t, 'cpu');
+      drawTechIcon(ctx, centerX - 40, centerY + 40, t + 1, 'memory');
+      drawTechIcon(ctx, centerX + 40, centerY + 40, t + 2, 'network');
+      
+      t += 0.02;
+    }
+    
+    requestAnimationFrame(draw);
+  }
+  
+  draw();
+}
+
+// Start animation when component mounts
+if (typeof window !== "undefined") {
+  setTimeout(animateCS, 100);
+}
+</script>
 
 <style is:global>
   .shiny-sec {
@@ -120,5 +350,88 @@ import SkillsList from "../React/SkillsList.tsx";
     70% {
       background-position: 0% 50%;
     }
+  }
+
+  .about-button {
+    position: relative;
+    width: 40px;
+    height: 180px;
+    background: #2a1b3d;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s ease;
+  }
+
+  .about-button:hover {
+    transform: scale(1.01);
+  }
+
+  .button-text {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    color: #ffffff;
+    transform: rotate(-90deg);
+    letter-spacing: 2px;
+    transition: color 0.1s ease;
+  }
+
+  .about-button:hover .button-text {
+    color: #f8f8f8;
+  }
+
+  .connecting-line {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 50px;
+    background: #2a1b3d;
+    transition: background 0.1s ease;
+  }
+
+  .about-button:hover .connecting-line {
+    background: #3a2b4d;
+  }
+
+  .computer-icon {
+    position: relative;
+    color: #a476ff;
+    filter: drop-shadow(0 0 8px rgba(164, 118, 255, 0.3));
+    transition: all 0.3s ease;
+    animation: computerGlow 3s ease-in-out infinite;
+  }
+
+  .computer-icon:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 12px rgba(164, 118, 255, 0.4));
+  }
+
+  @keyframes computerGlow {
+    0%, 100% {
+      filter: drop-shadow(0 0 8px rgba(164, 118, 255, 0.3));
+    }
+    50% {
+      filter: drop-shadow(0 0 12px rgba(164, 118, 255, 0.4));
+    }
+  }
+
+  .shadow-glow {
+    box-shadow: 
+      0 0 20px rgba(164, 118, 255, 0.2),
+      0 0 40px rgba(164, 118, 255, 0.1),
+      inset 0 0 20px rgba(164, 118, 255, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .shadow-glow:hover {
+    box-shadow: 
+      0 0 30px rgba(164, 118, 255, 0.4),
+      0 0 60px rgba(164, 118, 255, 0.2),
+      inset 0 0 30px rgba(164, 118, 255, 0.1);
+    transform: translateY(-2px);
   }
 </style>

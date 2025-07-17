@@ -33,7 +33,7 @@
       <div>
         <form
           id="contact-form"
-         
+          action="https://formspree.io/f/mdkdovwo" 
           method="POST"
           class="flex flex-col gap-4"
         >
@@ -92,8 +92,14 @@
       });
       if (response.ok) {
         form.reset();
-        form.style.display = "none";
+        // Show success message but keep form visible
         formMessage.classList.remove("hidden");
+        formMessage.textContent = "✅ Thank you for your message!";
+        
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          formMessage.classList.add("hidden");
+        }, 3000);
       } else {
         const data = await response.json();
         console.error("Error response:", data);

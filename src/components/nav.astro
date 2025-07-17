@@ -176,7 +176,7 @@ const navItems: NavItem[] = [
   document.addEventListener("DOMContentLoaded", () => {
     const sections = document.querySelectorAll("section[id]");
     const navLinks = document.querySelectorAll("nav a[href^='#']");
-    const observerOptions = { threshold: 0.6 };
+    const observerOptions = { threshold: 0.3, rootMargin: "-100px 0px -100px 0px" };
 
     const observerCallback = (entries) => {
       entries.forEach((entry) => {
@@ -196,6 +196,14 @@ const navItems: NavItem[] = [
       observerOptions
     );
     sections.forEach((section) => observer.observe(section));
+
+    // Set initial active state for home page
+    if (window.scrollY < 100) {
+      const homeLink = document.querySelector("nav a[href='#home']");
+      if (homeLink) {
+        homeLink.classList.add("active");
+      }
+    }
   });
 </script>
 
