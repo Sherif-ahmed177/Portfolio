@@ -18,7 +18,7 @@ const technologies = [
 ];
 ---
 
-<div class="relative overflow-x-hidden py-8" style="mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);">
+<div class="relative overflow-x-hidden py-8" style="mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); will-change: transform;">
   <div class="flex animate-scroll hover:animate-paused gap-12 md:gap-20 w-max">
     {
       [...technologies, ...technologies, ...technologies].map((tech) => (

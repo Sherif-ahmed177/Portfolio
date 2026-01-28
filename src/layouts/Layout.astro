@@ -91,24 +91,33 @@ const { title } = Astro.props;
           ${cfg.core} 10%, 
           ${cfg.aura} 40%, 
           transparent 80%)`;
-        div.style.filter = 'blur(140px)';
+        const isMobile = window.innerWidth < 768;
+        div.style.filter = `blur(${isMobile ? '80px' : '140px'})`;
         div.style.pointerEvents = 'none';
+        div.style.willChange = 'left, top';
         
         container.appendChild(div);
         circles.push({ el: div, ...cfg });
       });
 
+      let ticking = false;
       window.addEventListener('scroll', () => {
-        const scrolled = window.scrollY;
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollFactor = scrolled / Math.max(maxScroll, 1);
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const scrolled = window.scrollY;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollFactor = scrolled / Math.max(maxScroll, 1);
 
-        circles.forEach(c => {
-          const currentX = c.startX + (c.endX - c.startX) * scrollFactor;
-          const currentY = c.y - (scrolled * c.speed / window.innerHeight * 100);
-          c.el.style.left = `${currentX}%`;
-          c.el.style.top = `${currentY}%`;
-        });
+            circles.forEach(c => {
+              const currentX = c.startX + (c.endX - c.startX) * scrollFactor;
+              const currentY = c.y - (scrolled * c.speed / window.innerHeight * 100);
+              c.el.style.left = `${currentX}%`;
+              c.el.style.top = `${currentY}%`;
+            });
+            ticking = false;
+          });
+          ticking = true;
+        }
       }, { passive: true });
 
       // Scroll Reveal Observer
@@ -182,9 +191,9 @@ const { title } = Astro.props;
   /* Reveal Animations */
   .reveal {
     opacity: 0;
-    filter: blur(8px);
+    filter: blur(4px);
     transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform, opacity, filter;
+    will-change: transform, opacity;
   }
 
   .reveal-up { transform: translateY(40px); }

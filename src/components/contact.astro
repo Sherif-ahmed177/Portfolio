@@ -127,7 +127,7 @@ const COLORS = {
   shadow: "#101010",
 };
 
-function drawIsometricLaptop(ctx, cx, cy, scale) {
+function drawIsometricLaptop(ctx, cx, cy, scale, shadowActive) {
   // Base
   ctx.save();
   ctx.translate(cx, cy);
@@ -136,8 +136,10 @@ function drawIsometricLaptop(ctx, cx, cy, scale) {
   ctx.beginPath();
   ctx.moveTo(-60, 30); ctx.lineTo(60, 30); ctx.lineTo(80, 50); ctx.lineTo(-40, 50); ctx.closePath();
   ctx.fillStyle = COLORS.laptop;
-  ctx.shadowColor = COLORS.laptop;
-  ctx.shadowBlur = 16;
+  if (shadowActive) {
+    ctx.shadowColor = COLORS.laptop;
+    ctx.shadowBlur = 16;
+  }
   ctx.globalAlpha = 0.95;
   ctx.fill();
   ctx.shadowBlur = 0;
@@ -174,13 +176,15 @@ function drawIsometricLaptop(ctx, cx, cy, scale) {
   ctx.restore();
 }
 
-function drawFloatingBar(ctx, x, y, w, h, t) {
+function drawFloatingBar(ctx, x, y, w, h, t, shadowActive) {
   ctx.save();
   ctx.beginPath();
   ctx.rect(x, y - Math.sin(t) * 6, w, h);
   ctx.fillStyle = COLORS.bar;
-  ctx.shadowColor = COLORS.bar;
-  ctx.shadowBlur = 10;
+  if (shadowActive) {
+    ctx.shadowColor = COLORS.bar;
+    ctx.shadowBlur = 10;
+  }
   ctx.globalAlpha = 0.7;
   ctx.fill();
   ctx.shadowBlur = 0;
@@ -188,7 +192,7 @@ function drawFloatingBar(ctx, x, y, w, h, t) {
   ctx.restore();
 }
 
-function drawGear(ctx, cx, cy, r, t) {
+function drawGear(ctx, cx, cy, r, t, shadowActive) {
   ctx.save();
   ctx.translate(cx, cy);
   ctx.rotate(t);
@@ -199,8 +203,10 @@ function drawGear(ctx, cx, cy, r, t) {
   }
   ctx.closePath();
   ctx.fillStyle = COLORS.gear;
-  ctx.shadowColor = COLORS.gear;
-  ctx.shadowBlur = 8;
+  if (shadowActive) {
+    ctx.shadowColor = COLORS.gear;
+    ctx.shadowBlur = 8;
+  }
   ctx.globalAlpha = 0.7;
   ctx.fill();
   ctx.shadowBlur = 0;
@@ -208,7 +214,7 @@ function drawGear(ctx, cx, cy, r, t) {
   ctx.restore();
 }
 
-function drawPerson(ctx, x, y, scale, color, t) {
+function drawPerson(ctx, x, y, scale, color, t, shadowActive) {
   ctx.save();
   ctx.translate(x, y - Math.sin(t) * 4);
   ctx.scale(scale, scale);
@@ -216,8 +222,10 @@ function drawPerson(ctx, x, y, scale, color, t) {
   ctx.beginPath();
   ctx.arc(0, -10, 6, 0, 2 * Math.PI);
   ctx.fillStyle = color;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 8;
+  if (shadowActive) {
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 8;
+  }
   ctx.globalAlpha = 0.9;
   ctx.fill();
   ctx.shadowBlur = 0;
@@ -232,7 +240,7 @@ function drawPerson(ctx, x, y, scale, color, t) {
   ctx.restore();
 }
 
-function drawChart(ctx, x, y, t) {
+function drawChart(ctx, x, y, t, shadowActive) {
   ctx.save();
   ctx.translate(x, y);
   ctx.rotate(Math.sin(t) * 0.1);
@@ -243,8 +251,10 @@ function drawChart(ctx, x, y, t) {
   ctx.lineTo(54, -18);
   ctx.strokeStyle = COLORS.chart;
   ctx.lineWidth = 3;
-  ctx.shadowColor = COLORS.chart;
-  ctx.shadowBlur = 8;
+  if (shadowActive) {
+    ctx.shadowColor = COLORS.chart;
+    ctx.shadowBlur = 8;
+  }
   ctx.globalAlpha = 0.8;
   ctx.stroke();
   ctx.shadowBlur = 0;
@@ -252,7 +262,7 @@ function drawChart(ctx, x, y, t) {
   ctx.restore();
 }
 
-function drawProgress(ctx, x, y, w, h, t) {
+function drawProgress(ctx, x, y, w, h, t, shadowActive) {
   ctx.save();
   ctx.beginPath();
   ctx.rect(x, y, w, h);
@@ -264,8 +274,10 @@ function drawProgress(ctx, x, y, w, h, t) {
   ctx.beginPath();
   ctx.rect(x, y, w * ((Math.sin(t) + 1) / 2), h);
   ctx.fillStyle = COLORS.chart;
-  ctx.shadowColor = COLORS.chart;
-  ctx.shadowBlur = 8;
+  if (shadowActive) {
+    ctx.shadowColor = COLORS.chart;
+    ctx.shadowBlur = 8;
+  }
   ctx.globalAlpha = 0.7;
   ctx.fill();
   ctx.shadowBlur = 0;
@@ -286,25 +298,33 @@ function animateIsometricTech() {
   canvas.style.height = rect.height + "px";
   const ctx = canvas.getContext("2d");
   if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  
+  const isMobile = window.innerWidth < 768;
+  const shadowActive = !isMobile;
+
   let t = 0;
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Globally disable shadows for mobile performance if needed
+    if (!shadowActive) ctx.shadowBlur = 0;
+
     // Central laptop
-    drawIsometricLaptop(ctx, rect.width / 2, rect.height / 2 + 20, 1.1);
+    drawIsometricLaptop(ctx, rect.width / 2, rect.height / 2 + 20, 1.1, shadowActive);
     // Floating bars
-    drawFloatingBar(ctx, rect.width / 2 - 110, rect.height / 2 - 40, 32, 10, t + 0.5);
-    drawFloatingBar(ctx, rect.width / 2 + 80, rect.height / 2 - 60, 28, 10, t + 1.2);
+    drawFloatingBar(ctx, rect.width / 2 - 110, rect.height / 2 - 40, 32, 10, t + 0.5, shadowActive);
+    drawFloatingBar(ctx, rect.width / 2 + 80, rect.height / 2 - 60, 28, 10, t + 1.2, shadowActive);
     // Gears
-    drawGear(ctx, rect.width / 2 - 80, rect.height / 2 + 60, 16, t * 0.8);
-    drawGear(ctx, rect.width / 2 + 90, rect.height / 2 + 50, 12, -t * 1.1);
+    drawGear(ctx, rect.width / 2 - 80, rect.height / 2 + 60, 16, t * 0.8, shadowActive);
+    drawGear(ctx, rect.width / 2 + 90, rect.height / 2 + 50, 12, -t * 1.1, shadowActive);
     // People
-    drawPerson(ctx, rect.width / 2 - 40, rect.height / 2 + 10, 1, COLORS.person1, t);
-    drawPerson(ctx, rect.width / 2 + 30, rect.height / 2 + 18, 0.9, COLORS.person2, t + 1.5);
-    drawPerson(ctx, rect.width / 2, rect.height / 2 - 10, 0.8, COLORS.person3, t + 2.2);
+    drawPerson(ctx, rect.width / 2 - 40, rect.height / 2 + 10, 1, COLORS.person1, t, shadowActive);
+    drawPerson(ctx, rect.width / 2 + 30, rect.height / 2 + 18, 0.9, COLORS.person2, t + 1.5, shadowActive);
+    drawPerson(ctx, rect.width / 2, rect.height / 2 - 10, 0.8, COLORS.person3, t + 2.2, shadowActive);
     // Chart
-    drawChart(ctx, rect.width / 2 + 50, rect.height / 2 - 70, t);
+    drawChart(ctx, rect.width / 2 + 50, rect.height / 2 - 70, t, shadowActive);
     // Progress bar
-    drawProgress(ctx, rect.width / 2 - 60, rect.height / 2 + 80, 120, 10, t * 1.2);
+    drawProgress(ctx, rect.width / 2 - 60, rect.height / 2 + 80, 120, 10, t * 1.2, shadowActive);
     t += 0.03;
     requestAnimationFrame(draw);
   }

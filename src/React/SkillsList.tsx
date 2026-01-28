@@ -23,7 +23,7 @@ const SkillsList = () => {
 
   useEffect(() => {
     const canvas = document.getElementById("cs-animation-canvas") as HTMLCanvasElement | null;
-    if (!canvas) return;
+    if (!canvas || !canvas.offsetParent) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
