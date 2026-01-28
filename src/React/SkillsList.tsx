@@ -21,263 +21,260 @@ const CategoryIcons = {
 const SkillsList = () => {
   const [openItem, setOpenItem] = useState<string | null>(null);
 
-  // Animation colors
-  const CS_COLORS = {
-    primary: "#a476ff",
-    secondary: "#6ee7b7",
-    accent: "#f43f5e",
-    white: "#ffffff",
-    dark: "#2a1b3d"
-  };
-
   useEffect(() => {
     const canvas = document.getElementById("cs-animation-canvas") as HTMLCanvasElement | null;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    let t = 0;
-    let animationFrameId: number;
-    let mouseX = 0;
-    let mouseY = 0;
-    let isMouseOver = false;
-    canvas.width = 500;
-    canvas.height = 500;
 
-    // Mouse event listeners
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-      isMouseOver = true;
-    };
+    let rafId: number;
+    let time = 0;
+    const dpr = window.devicePixelRatio || 1;
+    const size = 500;
 
-    const handleMouseLeave = () => {
-      isMouseOver = false;
-    };
+    // Scale for High DPI
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    canvas.style.width = `${size}px`;
+    canvas.style.height = `${size}px`;
+    ctx.scale(dpr, dpr);
 
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
-
-    // Simple color scheme
+    const mouse = { x: 0, y: 0, active: false };
     const COLORS = {
       primary: "#a476ff",
       secondary: "#6ee7b7",
       accent: "#f43f5e",
-      text: "#ffffff",
-      dark: "#1a1a1a"
+      white: "#ffffff",
+      dark: "#141414",
+      bg: "#1a1a1a"
     };
 
-    function drawCodeEditor(ctx: CanvasRenderingContext2D, x: number, y: number, t: number) {
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+      mouse.active = true;
+    };
+    const handleMouseLeave = () => mouse.active = false;
+
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
+
+    // Data packets that travel along lines
+    class DataPacket {
+      progress: number;
+      speed: number;
+      targetIndex: number;
+      constructor(targetIndex: number) {
+        this.progress = Math.random();
+        this.speed = 0.002 + Math.random() * 0.003;
+        this.targetIndex = targetIndex;
+      }
+      draw(ctx: CanvasRenderingContext2D, start: { x: number, y: number }, end: { x: number, y: number }) {
+        this.progress += this.speed;
+        if (this.progress > 1) this.progress = 0;
+
+        const x = start.x + (end.x - start.x) * this.progress;
+        const y = start.y + (end.y - start.y) * this.progress;
+
+        ctx.beginPath();
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = COLORS.secondary;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = COLORS.secondary;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    const blocks = [
+      { x: 90, y: 70, label: 'function', color: COLORS.primary, packets: [new DataPacket(0), new DataPacket(0)] },
+      { x: 410, y: 150, label: 'class', color: COLORS.secondary, packets: [new DataPacket(1), new DataPacket(1)] },
+      { x: 100, y: 350, label: 'variable', color: COLORS.accent, packets: [new DataPacket(2), new DataPacket(2)] }
+    ];
+
+    function drawWindow(x: number, y: number, w: number, h: number, title: string, content: string[], accent: string, isTerminal = false) {
       ctx.save();
       ctx.translate(x, y);
-      
-      // Editor background - bigger size
-      ctx.fillStyle = COLORS.dark;
-      ctx.fillRect(-80, -50, 160, 100);
-      
-      // Title bar - bigger size
-      ctx.fillStyle = COLORS.primary;
-      ctx.fillRect(-80, -50, 160, 20);
-      
-      // Code lines
-      ctx.fillStyle = COLORS.text;
-      ctx.font = '10px monospace';
+
+      // Shadow
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = 'rgba(0,0,0,0.5)';
+
+      // Main Body
+      const gradient = ctx.createLinearGradient(0, 0, 0, h);
+      gradient.addColorStop(0, '#1a1a1a');
+      gradient.addColorStop(1, '#141414');
+      ctx.fillStyle = gradient;
+
+      // Rounded Rect
+      const r = 12;
+      ctx.beginPath();
+      ctx.moveTo(-w / 2 + r, -h / 2);
+      ctx.lineTo(w / 2 - r, -h / 2);
+      ctx.quadraticCurveTo(w / 2, -h / 2, w / 2, -h / 2 + r);
+      ctx.lineTo(w / 2, h / 2 - r);
+      ctx.quadraticCurveTo(w / 2, h / 2, w / 2 - r, h / 2);
+      ctx.lineTo(-w / 2 + r, h / 2);
+      ctx.quadraticCurveTo(-w / 2, h / 2, -w / 2, h / 2 - r);
+      ctx.lineTo(-w / 2, -h / 2 + r);
+      ctx.quadraticCurveTo(-w / 2, -h / 2, -w / 2 + r, -h / 2);
+      ctx.fill();
+
+      ctx.shadowBlur = 0;
+
+      // Header
+      ctx.fillStyle = accent;
+      ctx.beginPath();
+      ctx.moveTo(-w / 2 + r, -h / 2);
+      ctx.lineTo(w / 2 - r, -h / 2);
+      ctx.quadraticCurveTo(w / 2, -h / 2, w / 2, -h / 2 + r);
+      ctx.lineTo(w / 2, -h / 2 + 25);
+      ctx.lineTo(-w / 2, -h / 2 + 25);
+      ctx.lineTo(-w / 2, -h / 2 + r);
+      ctx.quadraticCurveTo(-w / 2, -h / 2, -w / 2 + r, -h / 2);
+      ctx.fill();
+
+      // dots for windows
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.arc(-w / 2 + 15 + i * 12, -h / 2 + 12, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Title
+      ctx.fillStyle = isTerminal ? COLORS.dark : COLORS.white;
+      ctx.font = 'bold 11px Inter, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(title, 0, -h / 2 + 16);
+
+      // Content
       ctx.textAlign = 'left';
-      
-      const codeLines = [
-        'function solve() {',
-        '',
-        '  const result = "Sherif";',
-        '  return result;',
-        '}',
-        
-        'const mouse = {',
-        `  x: ${Math.floor(mouseX)},`,
-        `  y: ${Math.floor(mouseY)}`,
-        '};'
-      ];
-      
-      codeLines.forEach((line, i) => {
-        let color = COLORS.text;
-        let alpha = 0.8;
-        
-        // Highlight current line based on mouse position
-        if (isMouseOver && Math.abs(mouseY - (y - 40 + i * 10)) < 8) {
-          color = COLORS.secondary;
-          alpha = 1;
-          ctx.fillStyle = COLORS.primary;
-          ctx.fillRect(-78, -48 + i * 10, 156, 10);
+      ctx.font = '11px JetBrains Mono, monospace';
+      content.forEach((line, i) => {
+        const lineY = -h / 2 + 45 + i * 14;
+
+        // Typing/Scanning effect line highlight
+        if (mouse.active && Math.abs(mouse.y - (y + lineY)) < 10) {
+          ctx.fillStyle = `${accent}22`;
+          ctx.fillRect(-w / 2 + 5, lineY - 10, w - 10, 14);
+          ctx.fillStyle = COLORS.secondary;
+        } else {
+          ctx.fillStyle = isTerminal ? COLORS.secondary : COLORS.white;
+          ctx.globalAlpha = 0.8;
         }
-        
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = color;
-        ctx.fillText(line, -75, -40 + i * 10);
+
+        ctx.fillText(line, -w / 2 + 15, lineY);
+        ctx.globalAlpha = 1;
       });
-      
-      ctx.globalAlpha = 1;
+
       ctx.restore();
     }
 
-    function drawTerminal(ctx: CanvasRenderingContext2D, x: number, y: number, t: number) {
-      ctx.save();
-      ctx.translate(x, y);
-      
-      // Terminal background - bigger size
-      ctx.fillStyle = COLORS.dark;
-      ctx.fillRect(-70, -40, 140, 80);
-      
-      // Terminal header - bigger size
-      ctx.fillStyle = COLORS.accent;
-      ctx.fillRect(-70, -40, 140, 15);
-      
-      // Terminal content
-      ctx.fillStyle = COLORS.secondary;
-      ctx.font = '10px monospace';
-      ctx.textAlign = 'left';
-      
-      const terminalLines = [
+    function render() {
+      ctx.clearRect(0, 0, size, size);
+      time += 0.01;
+
+      const center = { x: 250, y: 240 };
+
+      // 1. Draw connections first
+      blocks.forEach((block, i) => {
+        const floatX = Math.sin(time + i) * 5;
+        const floatY = Math.cos(time + i) * 5;
+        const target = { x: block.x + floatX, y: block.y + floatY };
+
+        // Line
+        ctx.beginPath();
+        ctx.moveTo(center.x, center.y);
+        ctx.lineTo(target.x, target.y);
+        ctx.strokeStyle = COLORS.primary;
+        ctx.globalAlpha = 0.2;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        // Data packets
+        block.packets.forEach(p => p.draw(ctx, center, target));
+      });
+
+      // 2. Draw Code Editor (Bottom Center)
+      const editorLines = [
+        'function solve() {',
+        '  const name = "Sherif";',
+        '  let skills = ["Logic", "Code"];',
+        '  return skills.map(s => solve(s));',
+        '}',
+        '',
+        'const mouse = {',
+        `  x: ${Math.floor(mouse.x)},`,
+        `  y: ${Math.floor(mouse.y)}`,
+        '};'
+      ];
+      drawWindow(250, 240, 260, 180, 'EDITOR.tsx', editorLines, COLORS.primary);
+
+      // 3. Draw Terminal (Top Center)
+      const termLines = [
         '$ whoami',
         'sherif_ahmed',
         '$ pwd',
         '/home/developer',
         '$ ls -la',
-        'drwxr-xr-x  projects',
-        'drwxr-xr-x  skills',
-        
+        'drwxr-xr-x projects',
+        'drwxr-xr-x skills'
       ];
-      
-      terminalLines.forEach((line, i) => {
-        const alpha = Math.sin(t + i * 0.5) * 0.2 + 0.8;
-        ctx.globalAlpha = alpha;
-        ctx.fillText(line, -65, -25 + i * 10);
-      });
-      
-      // Cursor blink
-      if (Math.sin(t * 4) > 0) {
-        ctx.fillStyle = COLORS.secondary;
-        ctx.fillRect(-65 + 8 * 7, -25 + 7 * 10, 2, 10);
-      }
-      
-      ctx.globalAlpha = 1;
-      ctx.restore();
-    }
+      drawWindow(250, 80, 180, 140, 'BASH', termLines, COLORS.accent, true);
 
-    function drawMouseTrail(ctx: CanvasRenderingContext2D, t: number) {
-      if (!isMouseOver) return;
-      
-      // Mouse cursor
-      ctx.save();
-      ctx.strokeStyle = COLORS.primary;
-      ctx.lineWidth = 2;
-      ctx.shadowColor = COLORS.primary;
-      ctx.shadowBlur = 10;
-      
-      // Cross cursor
-      ctx.beginPath();
-      ctx.moveTo(mouseX - 8, mouseY);
-      ctx.lineTo(mouseX + 8, mouseY);
-      ctx.moveTo(mouseX, mouseY - 8);
-      ctx.lineTo(mouseX, mouseY + 8);
-      ctx.stroke();
-      
-      // Circle around cursor
-      ctx.beginPath();
-      ctx.arc(mouseX, mouseY, 15, 0, 2 * Math.PI);
-      ctx.strokeStyle = COLORS.secondary;
-      ctx.globalAlpha = 0.3;
-      ctx.stroke();
-      
-      ctx.restore();
-    }
-
-    function drawCodeBlocks(ctx: CanvasRenderingContext2D, t: number) {
-      const blocks = [
-        { x: 80, y: 120, type: 'function', color: COLORS.primary },
-        { x: 420, y: 180, type: 'class', color: COLORS.secondary },
-        { x: 120, y: 420, type: 'variable', color: COLORS.accent }
-      ];
-      
+      // 4. Draw Floating Blocks
       blocks.forEach((block, i) => {
+        const floatX = Math.sin(time + i) * 5;
+        const floatY = Math.cos(time + i) * 5;
+        const x = block.x + floatX;
+        const y = block.y + floatY;
+
         ctx.save();
-        ctx.translate(block.x, block.y);
-        
-        const pulse = Math.sin(t + i) * 0.2 + 0.8;
-        const hoverEffect = isMouseOver ? 
-          Math.max(0, 1 - Math.sqrt((mouseX - block.x) ** 2 + (mouseY - block.y) ** 2) / 40) : 0;
-        
-        ctx.scale(pulse + hoverEffect * 0.2, pulse + hoverEffect * 0.2);
-        ctx.globalAlpha = 0.8 + hoverEffect * 0.2;
-        
-        // Block background - bigger size
+        ctx.translate(x, y);
+
+        const hoverEffect = mouse.active ?
+          Math.max(0, 1 - Math.sqrt((mouse.x - x) ** 2 + (mouse.y - y) ** 2) / 60) : 0;
+
+        const s = 1 + hoverEffect * 0.1;
+        ctx.scale(s, s);
+
+        // Box
         ctx.fillStyle = COLORS.dark;
-        ctx.fillRect(-30, -20, 60, 40);
-        
-        // Block border - bigger size
-        ctx.strokeStyle = block.color;
-        ctx.lineWidth = 3;
+        ctx.shadowBlur = 10;
         ctx.shadowColor = block.color;
-        ctx.shadowBlur = 5 + hoverEffect * 10;
-        ctx.strokeRect(-30, -20, 60, 40);
-        
-        // Block content - bigger font
+        ctx.strokeStyle = block.color;
+        ctx.lineWidth = 2;
+
+        const bw = 60, bh = 34;
+        ctx.beginPath();
+        ctx.roundRect(-bw / 2, -bh / 2, bw, bh, 8);
+        ctx.fill();
+        ctx.stroke();
+
+        // Label
+        ctx.shadowBlur = 0;
         ctx.fillStyle = block.color;
-        ctx.font = '12px monospace';
+        ctx.font = 'bold 10px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText(block.type, 0, 0);
-        
+        ctx.fillText(block.label, 0, 4);
+
         ctx.restore();
       });
+
+      rafId = requestAnimationFrame(render);
     }
 
-    function drawConnectionLines(ctx: CanvasRenderingContext2D, t: number) {
-      ctx.strokeStyle = COLORS.primary;
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.4;
-      ctx.shadowColor = COLORS.primary;
-      ctx.shadowBlur = 3;
-      
-      // Connect code blocks
-      const points = [
-        { x: 250, y: 250 }, // Center
-        { x: 80, y: 120 },
-        { x: 420, y: 180 },
-        { x: 120, y: 420 }
-      ];
-      
-      for(let i = 1; i < points.length; i++) {
-        const alpha = Math.sin(t + i) * 0.2 + 0.4;
-        ctx.globalAlpha = alpha;
-        ctx.beginPath();
-        ctx.moveTo(points[0].x, points[0].y);
-        ctx.lineTo(points[i].x, points[i].y);
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // No background - completely transparent
-      
-      drawConnectionLines(ctx, t);
-      drawCodeEditor(ctx, 250, 250, t);
-      drawTerminal(ctx, 250, 150, t);
-      drawCodeBlocks(ctx, t);
-      drawMouseTrail(ctx, t);
-      
-      t += 0.02;
-      animationFrameId = requestAnimationFrame(draw);
-    }
-
-    draw();
+    render();
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(rafId);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, []); // Empty dependency array: runs once on mount
+  }, []);
 
   const skills = {
     "WHO AM I?": [
@@ -303,7 +300,7 @@ const SkillsList = () => {
 
   return (
     <div className="text-left pt-3 md:pt-9">
-      <div className="flex flex-col lg:flex-row items-start gap-16">
+      <div className="flex flex-col lg:flex-row items-start gap-24">
         <div className="flex-1 max-w-2xl">
           <div className="flex items-center gap-4 mb-6">
             <h3 className="text-[var(--white)] text-3xl md:text-4xl font-semibold">
@@ -311,7 +308,7 @@ const SkillsList = () => {
             </h3>
             <div className="computer-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12">
-                <path d="M4 6H20V16H4V6ZM2 4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H3C2.44772 19 2 18.5523 2 18V4ZM6 8H18V14H6V8ZM8 20H16V22H8V20Z"/>
+                <path d="M4 6H20V16H4V6ZM2 4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H3C2.44772 19 2 18.5523 2 18V4ZM6 8H18V14H6V8ZM8 20H16V22H8V20Z" />
               </svg>
             </div>
           </div>
@@ -334,9 +331,8 @@ const SkillsList = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
-                        className={`w-6 h-6 text-[var(--white)] transform transition-transform flex-shrink-0 ${
-                          openItem === category ? "rotate-180" : ""
-                        }`}
+                        className={`w-6 h-6 text-[var(--white)] transform transition-transform flex-shrink-0 ${openItem === category ? "rotate-180" : ""
+                          }`}
                       >
                         <path d="M11.9999 13.1714L16.9497 8.22168L18.3639 9.63589L11.9999 15.9999L5.63599 9.63589L7.0502 8.22168L11.9999 13.1714Z"></path>
                       </svg>
@@ -344,11 +340,10 @@ const SkillsList = () => {
                   </div>
 
                   <div
-                    className={`transition-all duration-300 px-4 ${
-                      openItem === category
-                        ? "max-h-[500px] pb-4 opacity-100"
-                        : "max-h-0 opacity-0"
-                    }`}
+                    className={`transition-all duration-300 px-4 ${openItem === category
+                      ? "max-h-[500px] pb-4 opacity-100"
+                      : "max-h-0 opacity-0"
+                      }`}
                   >
                     <ul className="space-y-2 text-[var(--white-icon)] text-sm">
                       {items.map((item, index) => (
@@ -366,9 +361,9 @@ const SkillsList = () => {
         </div>
 
         {/* Computer Science Animation */}
-        <div className="hidden lg:block w-[500px] h-[500px] relative ml-16">
-          <canvas 
-            id="cs-animation-canvas" 
+        <div className="hidden lg:block w-[500px] h-[400px] relative ml-16">
+          <canvas
+            id="cs-animation-canvas"
             className="w-full h-full"
             style={{
               filter: 'drop-shadow(0 0 10px rgba(164, 118, 255, 0.2))'

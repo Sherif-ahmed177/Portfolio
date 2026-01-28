@@ -14,17 +14,20 @@ const LINES = [
   "$ who am i",
   "sherif_ahmed",
   "$ echo 'Sherif Ahmed'",
-  "Sherif Ahmed | Computer Science Student",
+  "Sherif Ahmed | CS Student",
   "$ echo 'Education'",
   "Nile University (2022-2026)",
   "$ skills",
-  "- python ,C, C++, C#,  JavaScript,Java ,Sql ,Github ,Djamgo ,.NEt , TypeScript",
-  "- React, Node.js,  HTML, CSS, Tailwind",
+  "- Python, C, C++, C#, JavaScript",
+  "- Java, SQL, GitHub, Django, .NET",
+  "- TypeScript, React, Node.js",
+  "- HTML, CSS, Tailwind",
   "$ interests",
-  "- Software Engineering, AI, Problem Solving",
+  "- Software Engineering, AI",
+  "- Problem Solving",
   "$ contact",
   "- Email: s.ahmed2268@nu.edu.eg",
-  "- LinkedIn: linkedin.com/in/sherif-ahmed-mahmoud",
+  "- LinkedIn: linkedin.com/in/sherif-ahmed",
   "$ _",
 ];
 const LINE_HEIGHT = 22;
@@ -86,11 +89,18 @@ const TerminalOutput = ({
     const parent = canvas.parentElement;
     if (!parent) return;
     const rect = parent.getBoundingClientRect();
+
+    // Adjust font and padding based on width
+    const isMobile = rect.width < 500;
+    const fontSize = isMobile ? "11px" : "15px";
+    const leftPad = isMobile ? 10 : 24;
+    const lineHeight = isMobile ? 17 : 22;
+
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = FONT;
+    ctx.font = `${fontSize} 'Fira Mono', 'Consolas', monospace`;
     ctx.textBaseline = "top";
     ctx.fillStyle = "#18181b";
     ctx.fillRect(0, 0, rect.width, rect.height);
@@ -102,15 +112,15 @@ const TerminalOutput = ({
     visibleLines.forEach((line, i) => {
       const { text, color } = parseAnsi(line);
       ctx.fillStyle = color;
-      ctx.fillText(text, 24, 16 + i * LINE_HEIGHT);
+      ctx.fillText(text, leftPad, 16 + i * lineHeight);
     });
     // Draw cursor
     if (showCursor && currentLine < LINES.length) {
       const before = LINES[currentLine]?.slice(0, currentChar) ?? "";
-      const cursorX = 24 + ctx.measureText(before).width;
-      const cursorY = 16 + (visibleLines.length - 1) * LINE_HEIGHT;
+      const cursorX = leftPad + ctx.measureText(before).width;
+      const cursorY = 16 + (visibleLines.length - 1) * lineHeight;
       ctx.fillStyle = ACCENT_COLOR;
-      ctx.fillRect(cursorX, cursorY, 10, 18);
+      ctx.fillRect(cursorX, cursorY, 8, isMobile ? 14 : 18);
     }
   }, [typedLines, currentLine, currentChar, showCursor]);
 
@@ -134,7 +144,7 @@ const TerminalOutput = ({
   }, []);
 
   return (
-    <div className="relative w-full h-[300px] md:h-[330px] bg-[#18181b] overflow-hidden rounded-xl border border-[#a476ff33] shadow-lg">
+    <div className="relative w-full h-[280px] md:h-[330px] bg-[#18181b] overflow-hidden rounded-xl border border-[#a476ff33] shadow-lg">
       <canvas ref={canvasRef} className="block w-full h-full" />
     </div>
   );

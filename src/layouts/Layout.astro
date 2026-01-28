@@ -52,40 +52,77 @@ const { title } = Astro.props;
 
     <title>Sherif Ahmed</title>
   </head>
-  <body class="bg-[--background] md:px-48 lg:px-20 px-9 transition-colors duration-300">
-    <div id="global-circles-bg" class="fixed inset-0 pointer-events-none -z-10"></div>
+  <body class="bg-[#101010] md:px-24 lg:px-20 px-4 transition-colors duration-300 relative">
+    <div id="global-circles-bg" class="fixed inset-0 pointer-events-none -z-10 overflow-hidden"></div>
     <slot />
     <script is:inline>
     (function() {
       const container = document.getElementById('global-circles-bg');
       if (!container) return;
-      container.innerHTML = '';
-      const circleCount = 7;
-      const colors = [
-        'rgba(164, 118, 255, 0.33)',
-        'rgba(110, 231, 183, 0.33)',
-        'rgba(124, 58, 237, 0.22)',
-        'rgba(255,255,255,0.13)'
+      
+      const circles = [];
+      const configs = [
+        { 
+          startX: -15, endX: 40, y: 15, size: 1000, 
+          core: 'rgba(164, 118, 255, 0.2)',  // Reduced opacity
+          aura: 'rgba(124, 58, 237, 0.1)',   // Reduced opacity
+          speed: 0.12 
+        },
+        { 
+          startX: 115, endX: 60, y: 70, size: 1100, 
+          core: 'rgba(99, 102, 241, 0.2)', 
+          aura: 'rgba(67, 56, 202, 0.08)', 
+          speed: 0.18 
+        }
       ];
-      for (let i = 0; i < circleCount; i++) {
+
+      configs.forEach(cfg => {
         const div = document.createElement('div');
-        const size = 80 + Math.random() * 180;
-        const left = Math.random() * 80;
-        const top = Math.random() * 80;
-        const color = colors[Math.floor(Math.random() * colors.length)];
         div.style.position = 'absolute';
-        div.style.width = `${size}px`;
-        div.style.height = `${size}px`;
-        div.style.left = `${left}%`;
-        div.style.top = `${top}%`;
+        div.style.width = `${cfg.size}px`;
+        div.style.height = `${cfg.size}px`;
+        div.style.left = `${cfg.startX}%`;
+        div.style.top = `${cfg.y}%`;
         div.style.transform = 'translate(-50%, -50%)';
         div.style.borderRadius = '50%';
-        div.style.background = `radial-gradient(circle, ${color} 0%, transparent 80%)`;
-        div.style.filter = 'blur(32px)';
-        div.style.opacity = '0.16';
+        // Multi-stop radial gradient for "layers" / core-aura effect
+        div.style.background = `radial-gradient(circle, 
+          ${cfg.core} 0%, 
+          ${cfg.core} 10%, 
+          ${cfg.aura} 40%, 
+          transparent 80%)`;
+        div.style.filter = 'blur(140px)';
         div.style.pointerEvents = 'none';
+        
         container.appendChild(div);
-      }
+        circles.push({ el: div, ...cfg });
+      });
+
+      window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollFactor = scrolled / Math.max(maxScroll, 1);
+
+        circles.forEach(c => {
+          const currentX = c.startX + (c.endX - c.startX) * scrollFactor;
+          const currentY = c.y - (scrolled * c.speed / window.innerHeight * 100);
+          c.el.style.left = `${currentX}%`;
+          c.el.style.top = `${currentY}%`;
+        });
+      }, { passive: true });
+
+      // Scroll Reveal Observer
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('reveal-active');
+            // Stop observing after it reveals to keep it smooth and simple
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     })();
     </script>
   </body>
@@ -98,6 +135,7 @@ const { title } = Astro.props;
     --white: #dfdfdf;
     --white-icon: #f3f3f398;
     --white-icon-tr: #f3f3f310;
+    --component-bg: rgba(20, 20, 20, 0.6);
   }
   body {
     transition: background 0.3s, color 0.3s;
@@ -140,31 +178,30 @@ const { title } = Astro.props;
     pointer-events: none;
     z-index: -10;
   }
-  .global-circles-bg .circle-glow {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(32px);
-    opacity: 0.16;
-    pointer-events: none;
+
+  /* Reveal Animations */
+  .reveal {
+    opacity: 0;
+    filter: blur(8px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity, filter;
   }
-  .global-circles-bg .circle1 {
-    width: 220px; height: 220px;
-    left: 8%; top: 12%;
-    background: radial-gradient(circle, #a476ff55 0%, transparent 80%);
+
+  .reveal-up { transform: translateY(40px); }
+  .reveal-down { transform: translateY(-40px); }
+  .reveal-left { transform: translateX(-40px); }
+  .reveal-right { transform: translateX(40px); }
+
+  .reveal-active {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate(0, 0) !important;
   }
-  .global-circles-bg .circle2 {
-    width: 180px; height: 180px;
-    right: 10%; top: 30%;
-    background: radial-gradient(circle, #6ee7b755 0%, transparent 80%);
-  }
-  .global-circles-bg .circle3 {
-    width: 140px; height: 140px;
-    left: 20%; bottom: 18%;
-    background: radial-gradient(circle, #fff2 0%, transparent 80%);
-  }
-  .global-circles-bg .circle4 {
-    width: 100px; height: 100px;
-    right: 18%; bottom: 10%;
-    background: radial-gradient(circle, #7c3aed44 0%, transparent 80%);
-  }
+
+  /* Delays */
+  .delay-100 { transition-delay: 100ms; }
+  .delay-200 { transition-delay: 200ms; }
+  .delay-300 { transition-delay: 300ms; }
+  .delay-400 { transition-delay: 400ms; }
+  .delay-500 { transition-delay: 500ms; }
 </style>

@@ -4,29 +4,29 @@ import LogoWall from "../components/logoWall.astro";
 import SkillsList from "../React/SkillsList.tsx";
 ---
 
-<section class="text-[var(--white)] mt-12 md:mt-0" id="home">
-  <div class="max-w-5xl mx-auto space-y-8 md:py-36 pb-14">
-    <div class="text-left space-y-4">
-      <p class="text-md md:text-lg text-[var(--white-icon)] shiny-white">
+<section class="text-[var(--white)] mt-8 md:mt-0" id="home">
+  <div class="max-w-6xl mx-auto px-5 md:px-12 space-y-12 md:space-y-8 pt-16 md:pt-36 pb-12 md:pb-20">
+    <div class="text-left space-y-4 reveal reveal-up">
+      <p class="text-sm md:text-lg text-[var(--white-icon)] shiny-white">
         Hi, I'm 
       </p>
       <div
         class="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-8 md:gap-4"
       >
         <h1
-          class="text-[var(--white)] text-5xl md:text-6xl font-medium text-pretty leading-none"
+          class="text-[var(--white)] text-6xl md:text-8xl font-medium text-pretty leading-none"
         >
           Sherif <br /> Ahmed
         </h1>
         <div class="flex flex-col items-center justify-center space-y-4 md:space-y-6">
-          <p class="text-lg md:text-xl lg:text-2xl text-[var(--white-icon)] text-center max-w-2xl leading-relaxed">
+          <p class="text-base md:text-xl lg:text-2xl text-[var(--white-icon)] text-center lg:text-left max-w-2xl leading-relaxed reveal reveal-up delay-100">
             I am a computer science student with a strong interest in 
             <span class="text-[var(--sec)] shiny-sec">software engineering</span>
             and a passion for solving real-world problems through technology.
           </p>
         </div>
       </div>
-      <div class="flex justify-start gap-2 pt-3 md:pt-6">
+      <div class="flex justify-start gap-2 pt-3 md:pt-6 reveal reveal-up delay-200">
         <a
           target="_blank"
           href="https://github.com/Sherif-ahmed177"
@@ -82,11 +82,13 @@ import SkillsList from "../React/SkillsList.tsx";
       </div>
     </div>
 
-    <LogoWall />
+    <div class="reveal reveal-up delay-300">
+      <LogoWall />
+    </div>
 
     <!-- Terminal Section with Exact Button Design -->
-    <div class="flex justify-center w-full">
-      <div class="w-full max-w-6xl flex items-center justify-center gap-8">
+    <div class="flex justify-center w-full reveal reveal-up delay-400">
+      <div class="w-full max-w-6xl md:px-12 flex items-center justify-center gap-8">
         <!-- Left Button - Exact Design -->
         <div class="hidden lg:flex flex-col items-center justify-center">
           <div class="about-button">
@@ -96,7 +98,7 @@ import SkillsList from "../React/SkillsList.tsx";
         </div>
 
         <!-- Terminal - Centered -->
-        <div class="w-full max-w-2xl flex justify-center">
+        <div class="w-[98%] md:w-full max-w-3xl flex justify-center">
           <LetterGlitch
             client:load
             glitchColors={["#5e4491", "#A476FF", "#241a38"]}
@@ -110,226 +112,12 @@ import SkillsList from "../React/SkillsList.tsx";
     </div>
 
     <!-- Skills Section -->
-    <div class="flex flex-col lg:flex-row items-center gap-8">
+    <div class="flex flex-col lg:flex-row items-center gap-8 reveal reveal-up">
       <SkillsList client:load />
     </div>
   </div>
 </section>
 
-<script is:inline>
-// Computer Science Animation
-const CS_COLORS = {
-  primary: "#a476ff",
-  secondary: "#6ee7b7", 
-  accent: "#f43f5e",
-  white: "#ffffff",
-  dark: "#2a1b3d"
-};
-
-function drawCodeBlock(ctx, x, y, t) {
-  ctx.save();
-  ctx.translate(x, y);
-  
-  // Code block background
-  ctx.fillStyle = 'rgba(20, 20, 20, 0.9)';
-  ctx.fillRect(-40, -30, 80, 60);
-  
-  // Code lines
-  ctx.fillStyle = CS_COLORS.primary;
-  ctx.font = '10px monospace';
-  ctx.textAlign = 'left';
-  
-  const codeLines = [
-    'function solve() {',
-    '  return "Sherif";',
-    '}'
-  ];
-  
-  codeLines.forEach((line, i) => {
-    const alpha = Math.sin(t + i) * 0.2 + 0.9;
-    ctx.globalAlpha = alpha;
-    ctx.fillText(line, -35, -15 + i * 12);
-  });
-  
-  ctx.restore();
-}
-
-function drawCircuit(ctx, x, y, t) {
-  ctx.save();
-  ctx.translate(x, y);
-  
-  // Circuit lines
-  ctx.strokeStyle = CS_COLORS.secondary;
-  ctx.lineWidth = 3;
-  ctx.shadowColor = CS_COLORS.secondary;
-  ctx.shadowBlur = 12;
-  ctx.globalAlpha = 0.8;
-  
-  // Horizontal lines
-  ctx.beginPath();
-  ctx.moveTo(-30, -20);
-  ctx.lineTo(30, -20);
-  ctx.moveTo(-30, 20);
-  ctx.lineTo(30, 20);
-  ctx.stroke();
-  
-  // Vertical lines
-  ctx.beginPath();
-  ctx.moveTo(-20, -30);
-  ctx.lineTo(-20, 30);
-  ctx.moveTo(20, -30);
-  ctx.lineTo(20, 30);
-  ctx.stroke();
-  
-  // Circuit nodes
-  ctx.fillStyle = CS_COLORS.secondary;
-  ctx.shadowBlur = 15;
-  ctx.globalAlpha = 0.9;
-  
-  const nodes = [
-    { x: -20, y: -20 }, { x: 20, y: -20 },
-    { x: -20, y: 20 }, { x: 20, y: 20 }
-  ];
-  
-  nodes.forEach((node, i) => {
-    const pulse = Math.sin(t + i) * 0.3 + 1.1;
-    ctx.beginPath();
-    ctx.arc(node.x, node.y, 4 * pulse, 0, 2 * Math.PI);
-    ctx.fill();
-  });
-  
-  ctx.restore();
-}
-
-function drawBinary(ctx, x, y, t) {
-  ctx.save();
-  ctx.translate(x, y);
-  
-  ctx.fillStyle = CS_COLORS.accent;
-  ctx.font = '12px monospace';
-  ctx.textAlign = 'center';
-  ctx.globalAlpha = 0.9;
-  
-  const binary = ['1010', '1100', '0110'];
-  binary.forEach((line, i) => {
-    const alpha = Math.sin(t + i * 0.5) * 0.2 + 0.9;
-    ctx.globalAlpha = alpha;
-    ctx.fillText(line, 0, i * 15);
-  });
-  
-  ctx.restore();
-}
-
-function drawTechIcon(ctx, x, y, t, type) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(t * 0.5);
-  
-  ctx.strokeStyle = CS_COLORS.primary;
-  ctx.lineWidth = 3;
-  ctx.shadowColor = CS_COLORS.primary;
-  ctx.shadowBlur = 15;
-  ctx.globalAlpha = 0.9;
-  
-  switch(type) {
-    case 'cpu':
-      // CPU icon
-      ctx.strokeRect(-15, -15, 30, 30);
-      ctx.fillStyle = CS_COLORS.primary;
-      ctx.fillRect(-10, -10, 20, 20);
-      break;
-    case 'memory':
-      // Memory icon
-      ctx.strokeRect(-12, -18, 24, 36);
-      for(let i = 0; i < 3; i++) {
-        ctx.fillRect(-8, -12 + i * 12, 16, 8);
-      }
-      break;
-    case 'network':
-      // Network icon
-      ctx.beginPath();
-      ctx.arc(0, 0, 12, 0, 2 * Math.PI);
-      ctx.stroke();
-      for(let i = 0; i < 4; i++) {
-        const angle = (i * Math.PI) / 2;
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(Math.cos(angle) * 20, Math.sin(angle) * 20);
-        ctx.stroke();
-      }
-      break;
-  }
-  
-  ctx.restore();
-}
-
-// Global variable for animation pause state
-let csAnimationPaused = false;
-
-function animateCS() {
-  const canvas = document.getElementById("cs-animation-canvas");
-  if (!canvas) return;
-  
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-  
-  canvas.width = 270;
-  canvas.height = 270;
-  
-  let t = 0;
-  
-  // Add hover event listeners to skills items
-  function setupEventListeners() {
-    const skillsItems = document.querySelectorAll('.skills-anim-pause');
-    console.log('Found skills items:', skillsItems.length); // Debug
-    
-    skillsItems.forEach(item => {
-      item.addEventListener('mouseenter', () => {
-        console.log('Mouse enter - pausing animation'); // Debug
-        csAnimationPaused = true;
-      });
-      item.addEventListener('mouseleave', () => {
-        console.log('Mouse leave - resuming animation'); // Debug
-        csAnimationPaused = false;
-      });
-    });
-  }
-  
-  // Setup event listeners after a delay
-  setTimeout(setupEventListeners, 100);
-
-  function draw() {
-    // Always clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Only animate if not paused
-    if (!csAnimationPaused) {
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      
-      drawCodeBlock(ctx, centerX - 80, centerY - 60, t);
-      drawCodeBlock(ctx, centerX + 80, centerY + 60, t + 1);
-      drawCircuit(ctx, centerX - 60, centerY + 80, t + 0.5);
-      drawCircuit(ctx, centerX + 60, centerY - 80, t + 1.5);
-      drawBinary(ctx, centerX - 100, centerY, t);
-      drawBinary(ctx, centerX + 100, centerY, t + 1);
-      drawTechIcon(ctx, centerX, centerY - 40, t, 'cpu');
-      drawTechIcon(ctx, centerX - 40, centerY + 40, t + 1, 'memory');
-      drawTechIcon(ctx, centerX + 40, centerY + 40, t + 2, 'network');
-      
-      t += 0.02;
-    }
-    
-    requestAnimationFrame(draw);
-  }
-  
-  draw();
-}
-
-// Start animation when component mounts
-if (typeof window !== "undefined") {
-  setTimeout(animateCS, 100);
-}
 </script>
 
 <style is:global>
